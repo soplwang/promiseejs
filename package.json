@@ -1,0 +1,28 @@
+{
+  "name": "promisee",
+  "version": "1.0.0",
+  "description": "Adapt promise with callback paradigm",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec",
+    "jshint": "jshint index.js test/ example/ || exit 0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/soplwang/promiseejs.git"
+  },
+  "keywords": [
+    "promise",
+    "callback",
+    "co"
+  ],
+  "author": "Wang Wenlin",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/soplwang/promiseejs/issues"
+  },
+  "homepage": "https://github.com/soplwang/promiseejs#readme",
+  "devDependencies": {
+    "co": "^4.6.0"
+  }
+}
