@@ -1,6 +1,12 @@
 promisee.js, Adapt promise with callback paradigm.
 ====
 
+Usage:
+
+```
+npm i promisee
+```
+
 Desiged intentional works with `co`.
 
 ```javascript
@@ -27,3 +33,5 @@ redis.get('r:1', r);
 r.then(...)
  .catch(...);
 ```
+
+LICENSE: MIT
