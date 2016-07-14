@@ -14,12 +14,15 @@ const co = require('co');
 const _ = require('promisee');
 
 co(function* () {
-  var r = _(), r2 = _();
-  redis.get('r:1', r);
-  redis.get('r:2', r2);
-  console.log('r:1', yield r);
-  console.log('r:2', yield r2);
-  console.log('r:1 + r:2', (yield r) + (yield r2));
+  var tickets = _(), tr = _(), coins = _(), likes = _();
+  redis.get('t:1', tickets);
+  if ((yield tickets) - 100 >= 0) {
+    redis.decr('t:1', 100, tr);
+  }
+  redis.get('c:1', coins);
+  redis.incr('l:1', 1, likes);
+  console.log((yield tr), (yield coins));
+  return (yield tr);
 });
 ```
 
@@ -27,11 +30,8 @@ Works without `co` like plain old `Promise` too:
 
 ```javascript
 var r = _();
-
 redis.get('r:1', r);
-
-r.then(...)
- .catch(...);
+r.then(...).catch(...);
 ```
 
 LICENSE: MIT
