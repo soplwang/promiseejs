@@ -19,9 +19,9 @@ co(function* () {
   if ((yield tickets) - 100 >= 0) {
     redis.decr('t:1', 100, tr);
   }
-  redis.get('c:1', coins);
+  redis.mget(['c:1', 'c2:1'], coins);
   redis.incr('l:1', 1, likes);
-  console.log((yield tr), (yield coins));
+  console.log((yield tr), (yield coins)[0]);
   return (yield tr);
 });
 ```
