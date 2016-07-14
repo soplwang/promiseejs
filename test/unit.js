@@ -25,17 +25,17 @@ describe('promisee.js', function () {
     });
 
     it('plain old promise', function (done) {
-        var r = _(), r2 = _();
-        process.nextTick(() => r(null, 'ok'));
-        process.nextTick(() => r2('err'));
-        r.then(v => {
-          assert.equal(v, 'ok');
-          r.then(v => {
-            assert.equal(v + '!', 'ok!');
-            r2.then(v => done(Error('r2 not throw')))
-              .catch(e => done());
-          });
-        })
+      var r = _(), r2 = _();
+      process.nextTick(() => r(null, 'ok'));
+      process.nextTick(() => r2('err'));
+      r.then(v => assert.equal(v, 'ok'))
+       .catch(e => done(e));
+      r.then(v => assert.equal(v + '!', 'ok!'))
+       .then(() => {
+        r2.then(v => done(Error('r2 not throw')))
+          .catch(e => done());
+       })
+       .catch(e => done(e));
     });
   });
 
