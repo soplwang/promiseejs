@@ -7,7 +7,7 @@ const co = require('co');
 const _ = require('../');
 
 describe('promisee.js', function () {
-  describe('promisee mode', function () {
+  describe('promisee', function () {
     it('normal usages w/ co', function (done) {
       co(function* () {
         var r = _(), r2 = _();
@@ -36,26 +36,6 @@ describe('promisee.js', function () {
           .catch(e => done());
        })
        .catch(e => done(e));
-    });
-  });
-
-  describe('then mode', function () {
-    it('split err from callbacks', function () {
-      _(null, function (res) {
-        assert.equal(res, 1);
-      })(null, 1);
-
-      _(function (e) {
-        assert.equal(e.message, 'err');
-      })(Error('err'));
-    });
-
-    it('support multiple params', function () {
-      _(null, function (res, r2, r3) {
-        assert.equal(res, 1);
-        assert.equal(r2, 2);
-        assert.equal(r3, 3);
-      })(null, 1, 2, 3);
     });
   });
 });

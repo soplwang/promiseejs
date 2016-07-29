@@ -31,7 +31,8 @@ Works without `co` like plain old `Promise` too:
 ```javascript
 var r = _();
 redis.get('r:1', r);
-r.then(...).catch(...);
+r.then(...)
+ .catch(...);
 ```
 
 LICENSE: MIT
