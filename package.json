@@ -1,6 +1,6 @@
 {
   "name": "promisee",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Adapt promise with callback paradigm",
   "main": "index.js",
   "scripts": {

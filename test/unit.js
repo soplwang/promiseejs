@@ -4,13 +4,14 @@
 const assert = require('assert');
 const util = require('util');
 const co = require('co');
-const _ = require('../');
+const promisee = require('../');
+const then = require('../').then;
 
 describe('promisee.js', function () {
-  describe('promisee', function () {
+  describe('promisee()', function () {
     it('normal usages w/ co', function (done) {
       co(function* () {
-        var r = _(), r2 = _();
+        var r = promisee(), r2 = promisee();
         process.nextTick(() => r(null, 'ok'));
         process.nextTick(() => r2('err'));
         assert.equal(yield r, 'ok');
@@ -25,7 +26,7 @@ describe('promisee.js', function () {
     });
 
     it('plain old promise', function (done) {
-      var r = _(), r2 = _();
+      var r = promisee(), r2 = promisee();
       process.nextTick(() => r(null, 'ok'));
       process.nextTick(() => r2('err'));
       r.then(v => assert.equal(v, 'ok'))
@@ -36,6 +37,26 @@ describe('promisee.js', function () {
           .catch(e => done());
        })
        .catch(e => done(e));
+    });
+  });
+
+  describe('then()', function () {
+    it('split err from callbacks', function () {
+      then(undefined, function (res) {
+        assert.equal(res, 1);
+      })(undefined, 1);
+
+      then(function (e) {
+        assert.equal(e.message, 'err');
+      })(Error('err'));
+    });
+
+    it('support multiple params', function () {
+      then(undefined, function (res, r2, r3) {
+        assert.equal(res, 1);
+        assert.equal(r2, 2);
+        assert.equal(r3, 3);
+      })(undefined, 1, 2, 3);
     });
   });
 });

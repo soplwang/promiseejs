@@ -11,10 +11,10 @@ Desiged intentional works with `co`.
 
 ```javascript
 const co = require('co');
-const _ = require('promisee');
+const promisee = require('promisee');
 
 co(function* () {
-  var tickets = _(), tr = _(), coins = _(), likes = _();
+  var tickets = promisee(), tr = promisee(), coins = promisee(), likes = promisee();
   redis.get('t:1', tickets);
   if ((yield tickets) - 100 >= 0) {
     redis.decr('t:1', 100, tr);
@@ -29,10 +29,24 @@ co(function* () {
 Works without `co` like plain old `Promise` too:
 
 ```javascript
-var r = _();
+var r = promisee();
 redis.get('r:1', r);
 r.then(...)
  .catch(...);
+```
+
+Combine stand-alone error and success continuations into node.js style callback.
+
+```javascript
+const then = require('promisee').then;
+
+redis.get('key', then(err, data => console.log(data)));
+redis.get('key2', then(err, data => console.log(data)));
+redis.get('key3', then(err, data => console.log(data)));
+
+function err(e) {
+  console.error(e);
+}
 ```
 
 LICENSE: MIT
