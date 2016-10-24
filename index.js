@@ -1,11 +1,9 @@
 /* Copyright 2016, Wang Wenlin */
+
 "use strict";
 
 module.exports = promisee;
 module.exports.then = then;
-
-const then_ = Promise.prototype.then;
-const catch_ = Promise.prototype.catch;
 
 
 /**
@@ -13,14 +11,24 @@ const catch_ = Promise.prototype.catch;
  * @returns {Function(e, v)} - node.js style callback w/ promise mixin
  */
 function promisee() {
-  var thk;
-  var o = new Promise((resolv, reject) => {
+  var thk, cthk;
+  var promise = new Promise((resolv, reject) => {
     thk = _then(reject, resolv);
   });
-  thk.then = then_.bind(o);
-  thk.catch = catch_.bind(o);
+  thk.then = then_;
+  thk.catch = catch_;
   return thk;
-};
+
+  function then_(ful, r) {
+    if (!cthk) cthk = promisee();
+    promise.then(ful, r).then(v => cthk(undefined, v), e => cthk(e));
+    return cthk;
+  }
+
+  function catch_(r) {
+    return then_(undefined, r);
+  }
+}
 
 
 /**
@@ -49,11 +57,11 @@ function then(err, next) {
   };
 }
 
-
+  
 /* Simplicitized version _then_ only for promisee().
  */
 function _then(err, next) {
-  return function t2(err_, arg/*, ...*/) {
+  return function _t(err_, arg/*, ...*/) {
     if (err_) {
       err(err_);
     } else if (arguments.length <= 2) {

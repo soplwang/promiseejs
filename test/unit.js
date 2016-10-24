@@ -26,22 +26,24 @@ describe('promisee.js', function () {
     });
 
     it('plain old promise', function (done) {
-      var r = promisee(), r2 = promisee();
+      var r = promisee().catch(e => done(e));
+      var r2 = promisee().then(v => done(Error('r2 not throw')));
       process.nextTick(() => r(null, 'ok'));
       process.nextTick(() => r2('err'));
-      r.then(v => assert.equal(v, 'ok'))
-       .catch(e => done(e));
+      r.then(v => assert.equal(v, 'ok'));
       r.then(v => assert.equal(v + '!', 'ok!'))
-       .then(() => {
-        r2.then(v => done(Error('r2 not throw')))
-          .catch(e => done());
-       })
-       .catch(e => done(e));
+       .then(v => assert.equal(v + '!!', 'ok!!'));
+      Promise.all([r, r2])
+       .then(() => done(Error('r2 not throw')))
+       .catch(e => done());
     });
   });
 
   describe('then()', function () {
     it('split err from callbacks', function () {
+      then()();
+      then()(Error('err'));
+
       then(undefined, function (res) {
         assert.equal(res, 1);
       })(undefined, 1);
@@ -49,6 +51,10 @@ describe('promisee.js', function () {
       then(function (e) {
         assert.equal(e.message, 'err');
       })(Error('err'));
+
+      then(function (e) {
+        assert.equal(e.message, 'err');
+      })();
     });
 
     it('support multiple params', function () {

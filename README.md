@@ -7,11 +7,11 @@ Usage:
 npm i promisee
 ```
 
-Desiged intentional works with `co`.
+Desiged intentional works with `co`:
 
 ```javascript
-const co = require('co');
 const promisee = require('promisee');
+const co = require('co');
 
 co(function* () {
   var tickets = promisee(), tr = promisee(), coins = promisee(), likes = promisee();
@@ -30,12 +30,19 @@ Works without `co` like plain old `Promise` too:
 
 ```javascript
 var r = promisee();
+var r2 = promisee().catch(e => {});
+
 redis.get('r:1', r);
-r.then(...)
- .catch(...);
+redis.get('r:1', r2);
+
+Promise.all(r, r2).then(values => {
+  ...
+}).catch(e => {
+  ...
+});
 ```
 
-Combine stand-alone error and success continuations into node.js style callback.
+Combine stand-alone error and success continuations into node.js style callback:
 
 ```javascript
 const then = require('promisee').then;
