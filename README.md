@@ -42,7 +42,7 @@ Promise.all(r, r2).then(values => {
 });
 ```
 
-And use the cornerstone `then`, that combines stand-alone error and success continuations into node.js style callback:
+Or use the cornerstone `then`, that combines stand-alone error and success continuations into node.js style callback:
 
 ```javascript
 const then = require('promisee').then;
