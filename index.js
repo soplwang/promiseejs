@@ -1,4 +1,4 @@
-/* Copyright 2016, Wang Wenlin */
+/* Copyright 2016, Wang Wenlin under MIT License. */
 
 "use strict";
 
@@ -57,7 +57,7 @@ function then(err, next) {
   };
 }
 
-  
+
 /* Simplicitized version _then_ only for promisee().
  */
 function _then(err, next) {
